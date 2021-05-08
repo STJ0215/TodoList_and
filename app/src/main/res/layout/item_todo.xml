@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="horizontal">
@@ -22,13 +23,16 @@
         android:text="제목"
         android:textSize="20sp" />
 
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/item_todo__btnDelete"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginRight="5sp"
-        android:drawableLeft="@drawable/ic_baseline_delete_24"
         android:focusable="false"
-        android:text="삭제" />
-
+        android:insetLeft="0dp"
+        android:insetRight="0dp"
+        android:minWidth="0sp"
+        app:icon="@drawable/ic_baseline_delete_24"
+        app:iconGravity="textStart"
+        app:iconPadding="0dp" />
 </LinearLayout>
