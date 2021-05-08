@@ -65,7 +65,26 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
         });
 
-        todoAdapter = new TodoAdapter(todos);
+        todoAdapter = new TodoAdapter(todos, view -> {
+            final int indexToDelete = (int) view.getTag();
+
+            DialogInterface.OnClickListener onClickListener = (dialog, which) -> {
+                switch (which) {
+                    case DialogInterface.BUTTON_POSITIVE:
+                        deleteTodo(indexToDelete);
+                        break;
+                    case DialogInterface.BUTTON_NEGATIVE:
+                        break;
+                }
+            };
+
+            new AlertDialog.Builder(this)
+                    .setMessage("삭제하시겠습니까?")
+                    .setPositiveButton("예", onClickListener)
+                    .setNegativeButton("아니오", onClickListener)
+                    .show();
+        });
+
         listViewTodo.setAdapter(todoAdapter);
 
         makeTestData(); // 임시

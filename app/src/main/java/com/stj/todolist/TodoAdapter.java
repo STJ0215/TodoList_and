@@ -15,9 +15,11 @@ import java.util.List;
 
 public class TodoAdapter extends BaseAdapter {
     private List<Todo> todos;
+    private View.OnClickListener onBtnDeleteClicked;
 
-    public TodoAdapter(List<Todo> todos) {
+    public TodoAdapter(List<Todo> todos, View.OnClickListener onBtnDeleteClicked) {
         this.todos = todos;
+        this.onBtnDeleteClicked = onBtnDeleteClicked;
     }
 
     @Override
@@ -48,26 +50,7 @@ public class TodoAdapter extends BaseAdapter {
             viewHolder.textViewTitle = convertView.findViewById(R.id.item_todo__textViewTitle);
             viewHolder.btnDelete = convertView.findViewById(R.id.item_todo__btnDelete);
 
-            viewHolder.btnDelete.setOnClickListener(view -> {
-                final int indexToDelete = (int)view.getTag();
-
-                DialogInterface.OnClickListener onClickListener = (dialog, which) -> {
-                    switch (which) {
-                        case DialogInterface.BUTTON_POSITIVE:
-                            todos.remove(indexToDelete);
-                            this.notifyDataSetChanged();
-                            break;
-                        case DialogInterface.BUTTON_NEGATIVE:
-                            break;
-                    }
-                };
-
-                new AlertDialog.Builder(parent.getContext())
-                        .setMessage("삭제하시겠습니까?")
-                        .setPositiveButton("예", onClickListener)
-                        .setNegativeButton("아니오", onClickListener)
-                        .show();
-            });
+            viewHolder.btnDelete.setOnClickListener(onBtnDeleteClicked);
 
             convertView.setTag(viewHolder);
         } else {
