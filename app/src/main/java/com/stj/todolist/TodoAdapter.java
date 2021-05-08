@@ -5,6 +5,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
@@ -41,6 +44,11 @@ public class TodoAdapter extends BaseAdapter {
 
             viewHolder.textViewId = convertView.findViewById(R.id.item_todo__textViewId);
             viewHolder.textViewTitle = convertView.findViewById(R.id.item_todo__textViewTitle);
+            viewHolder.btnDelete = convertView.findViewById(R.id.item_todo__btnDelete);
+
+            viewHolder.btnDelete.setOnClickListener(view -> {
+                Toast.makeText(parent.getContext(), "안녕", Toast.LENGTH_SHORT).show();
+            });
 
             convertView.setTag(viewHolder);
         } else {
@@ -51,6 +59,7 @@ public class TodoAdapter extends BaseAdapter {
 
         viewHolder.textViewId.setText(todo.getId() + "");
         viewHolder.textViewTitle.setText(todo.getTitle());
+        viewHolder.btnDelete.setTag(position);
 
         return convertView;
     }
@@ -58,5 +67,6 @@ public class TodoAdapter extends BaseAdapter {
     static class ViewHolder {
         TextView textViewId;
         TextView textViewTitle;
+        TextView btnDelete;
     }
 }
