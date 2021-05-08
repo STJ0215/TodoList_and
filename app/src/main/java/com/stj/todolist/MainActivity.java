@@ -1,6 +1,7 @@
 package com.stj.todolist;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -35,15 +36,30 @@ public class MainActivity extends AppCompatActivity {
         listViewTodoAdapter.notifyDataSetChanged();
     }
 
+    private void makeTestData() {
+        addTodo("할일1");
+        addTodo("할일2");
+        addTodo("할일3");
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        setTitle("할일 목록");
+
         todos = new ArrayList<>();
         editTextTodo = findViewById(R.id.activity_main__editTextTodo);
 
         ListView listViewTodo = findViewById(R.id.main_activity__listViewTodo);
+
+        listViewTodo.setOnItemClickListener((adapterView, view, position, id) -> {
+            Intent intent = new Intent(this, DetailActivity.class);
+            String todo = todos.get(position);
+            intent.putExtra("todo", todo);
+            startActivity(intent);
+        });
 
         listViewTodo.setOnItemLongClickListener((adapterView, view, position, id) -> {
             final int indexToDelete = position;
@@ -69,6 +85,8 @@ public class MainActivity extends AppCompatActivity {
 
         listViewTodoAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, todos);
         listViewTodo.setAdapter(listViewTodoAdapter);
+
+        makeTestData(); // 임시
     }
 
     public void btnAddTodoClicked(View view) {
