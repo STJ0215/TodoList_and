@@ -1,5 +1,6 @@
 package com.stj.todolist;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -7,6 +8,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.ArrayList;
@@ -29,11 +31,25 @@ public class MainActivity extends AppCompatActivity {
         ListView listViewTodo = findViewById(R.id.main_activity__listViewTodo);
 
         listViewTodo.setOnItemLongClickListener((adapterView, view, position, id) -> {
-            int indexToDelete = position;
+            final int indexToDelete = position;
 
-            todos.remove(indexToDelete);
-            listViewTodoAdapter.notifyDataSetChanged();
+            DialogInterface.OnClickListener onClickListener = (dialog, which) -> {
+                switch (which) {
+                    case DialogInterface.BUTTON_POSITIVE:
+                        todos.remove(indexToDelete);
+                        listViewTodoAdapter.notifyDataSetChanged();
+                        break;
+                    case DialogInterface.BUTTON_NEGATIVE:
+                        break;
+                }
+            };
 
+            new AlertDialog.Builder(this)
+                    .setMessage("삭제하시겠습니까?")
+                    .setPositiveButton("예", onClickListener)
+                    .setNegativeButton("아니오", onClickListener)
+                    .show();
+            
             return false;
         });
 
