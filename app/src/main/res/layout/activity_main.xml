@@ -6,18 +6,19 @@
     android:orientation="vertical"
     tools:context=".MainActivity">
 
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
         <EditText
+            android:id="@+id/activity_main__editTextTodo"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:hint="할일을 입력해주세요." />
 
         <Button
+            android:onClick="btnAddTodoClicked"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="추가" />
