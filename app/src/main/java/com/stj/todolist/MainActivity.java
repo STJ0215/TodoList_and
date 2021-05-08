@@ -20,6 +20,21 @@ public class MainActivity extends AppCompatActivity {
     private List<String> todos;
     private ArrayAdapter<String> listViewTodoAdapter;
 
+    private void addTodo(String newTodo) {
+        todos.add(0, newTodo);
+        listViewTodoAdapter.notifyDataSetChanged();
+    }
+
+    private void deleteTodo(int index) {
+        todos.remove(index);
+        listViewTodoAdapter.notifyDataSetChanged();
+    }
+
+    private void deleteAllTodos() {
+        todos.clear();
+        listViewTodoAdapter.notifyDataSetChanged();
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,8 +51,7 @@ public class MainActivity extends AppCompatActivity {
             DialogInterface.OnClickListener onClickListener = (dialog, which) -> {
                 switch (which) {
                     case DialogInterface.BUTTON_POSITIVE:
-                        todos.remove(indexToDelete);
-                        listViewTodoAdapter.notifyDataSetChanged();
+                        deleteTodo(indexToDelete);
                         break;
                     case DialogInterface.BUTTON_NEGATIVE:
                         break;
@@ -49,7 +63,7 @@ public class MainActivity extends AppCompatActivity {
                     .setPositiveButton("예", onClickListener)
                     .setNegativeButton("아니오", onClickListener)
                     .show();
-            
+
             return false;
         });
 
@@ -68,10 +82,37 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
 
-        todos.add(0, newTodo);
-        listViewTodoAdapter.notifyDataSetChanged();
+        addTodo(newTodo);
 
         editTextTodo.setText("");
         editTextTodo.requestFocus();
+    }
+
+    public void btnDeleteAllTodosClicked(View view) {
+        if (todos.size() == 0) {
+            Toast.makeText(this, "할일이 존재하지 않습니다.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        DialogInterface.OnClickListener onClickListener = (dialog, which) -> {
+            switch (which) {
+                case DialogInterface.BUTTON_POSITIVE:
+                    deleteAllTodos();
+                    Toast.makeText(this, "모든 할일이 삭제되었습니다.", Toast.LENGTH_SHORT).show();
+                    break;
+                case DialogInterface.BUTTON_NEGATIVE:
+                    break;
+            }
+        };
+
+        new AlertDialog.Builder(this)
+                .setMessage("정말 전부 삭제하시겠습니까?")
+                .setPositiveButton("예", onClickListener)
+                .setNegativeButton("아니오", onClickListener)
+                .show();
+    }
+
+    public void btnFinishAppClicked(View view) {
+        finish();
     }
 }
