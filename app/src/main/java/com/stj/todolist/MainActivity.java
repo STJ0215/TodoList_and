@@ -1,9 +1,10 @@
 package com.stj.todolist;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -15,6 +16,7 @@ public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
     private EditText editTextTodo;
     private List<String> todos;
+    private ArrayAdapter<String> listViewTodoAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,8 +24,11 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         todos = new ArrayList<>();
-
         editTextTodo = findViewById(R.id.activity_main__editTextTodo);
+
+        ListView listViewTodo = findViewById(R.id.main_activity__listViewTodo);
+        listViewTodoAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, todos);
+        listViewTodo.setAdapter(listViewTodoAdapter);
     }
 
     public void btnAddTodoClicked(View view) {
@@ -37,10 +42,10 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
 
-        todos.add(newTodo);
+        todos.add(0, newTodo);
+        listViewTodoAdapter.notifyDataSetChanged();
+
         editTextTodo.setText("");
         editTextTodo.requestFocus();
-
-        Log.d(TAG, "todos : " + todos);
     }
 }
