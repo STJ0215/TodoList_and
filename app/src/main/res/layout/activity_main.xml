@@ -8,7 +8,8 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:padding="5sp">
 
         <EditText
             android:id="@+id/activity_main__editTextTodo"
@@ -20,6 +21,7 @@
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:drawableLeft="@drawable/ic_baseline_add_24"
             android:onClick="btnAddTodoClicked"
             android:text="추가" />
     </LinearLayout>
