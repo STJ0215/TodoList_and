@@ -27,6 +27,16 @@ public class MainActivity extends AppCompatActivity {
         editTextTodo = findViewById(R.id.activity_main__editTextTodo);
 
         ListView listViewTodo = findViewById(R.id.main_activity__listViewTodo);
+
+        listViewTodo.setOnItemLongClickListener((adapterView, view, position, id) -> {
+            int indexToDelete = position;
+
+            todos.remove(indexToDelete);
+            listViewTodoAdapter.notifyDataSetChanged();
+
+            return false;
+        });
+
         listViewTodoAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, todos);
         listViewTodo.setAdapter(listViewTodoAdapter);
     }
