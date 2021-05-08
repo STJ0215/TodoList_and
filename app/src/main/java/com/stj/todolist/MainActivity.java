@@ -38,9 +38,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void makeTestData() {
-        addTodo("할일1");
-        addTodo("할일2");
-        addTodo("할일3");
+        for (int i = 1; i <= 10; i++) {
+            addTodo("할일 " + i);
+        }
     }
 
     @Override
@@ -63,28 +63,6 @@ public class MainActivity extends AppCompatActivity {
             intent.putExtra("todoId", todo.getId());
             intent.putExtra("todoTitle", todo.getTitle());
             startActivity(intent);
-        });
-
-        listViewTodo.setOnItemLongClickListener((adapterView, view, position, id) -> {
-            final int indexToDelete = position;
-
-            DialogInterface.OnClickListener onClickListener = (dialog, which) -> {
-                switch (which) {
-                    case DialogInterface.BUTTON_POSITIVE:
-                        deleteTodo(indexToDelete);
-                        break;
-                    case DialogInterface.BUTTON_NEGATIVE:
-                        break;
-                }
-            };
-
-            new AlertDialog.Builder(this)
-                    .setMessage("삭제하시겠습니까?")
-                    .setPositiveButton("예", onClickListener)
-                    .setNegativeButton("아니오", onClickListener)
-                    .show();
-
-            return false;
         });
 
         todoAdapter = new TodoAdapter(todos);
