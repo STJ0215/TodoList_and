@@ -4,7 +4,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -18,22 +17,24 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
     private EditText editTextTodo;
-    private List<String> todos;
-    private ArrayAdapter<String> listViewTodoAdapter;
+    private List<Todo> todos;
+    private int todosLastId;
+    private TodoAdapter todoAdapter;
 
-    private void addTodo(String newTodo) {
+    private void addTodo(String newTodoTitle) {
+        Todo newTodo = new Todo(++todosLastId, newTodoTitle);
         todos.add(0, newTodo);
-        listViewTodoAdapter.notifyDataSetChanged();
+        todoAdapter.notifyDataSetChanged();
     }
 
     private void deleteTodo(int index) {
         todos.remove(index);
-        listViewTodoAdapter.notifyDataSetChanged();
+        todoAdapter.notifyDataSetChanged();
     }
 
     private void deleteAllTodos() {
         todos.clear();
-        listViewTodoAdapter.notifyDataSetChanged();
+        todoAdapter.notifyDataSetChanged();
     }
 
     private void makeTestData() {
@@ -50,14 +51,17 @@ public class MainActivity extends AppCompatActivity {
         setTitle("할일 목록");
 
         todos = new ArrayList<>();
+        todosLastId = 0;
+
         editTextTodo = findViewById(R.id.activity_main__editTextTodo);
 
         ListView listViewTodo = findViewById(R.id.main_activity__listViewTodo);
 
         listViewTodo.setOnItemClickListener((adapterView, view, position, id) -> {
             Intent intent = new Intent(this, DetailActivity.class);
-            String todo = todos.get(position);
-            intent.putExtra("todo", todo);
+            Todo todo = todos.get(position);
+            intent.putExtra("todoId", todo.getId());
+            intent.putExtra("todoTitle", todo.getTitle());
             startActivity(intent);
         });
 
@@ -83,8 +87,8 @@ public class MainActivity extends AppCompatActivity {
             return false;
         });
 
-        listViewTodoAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, todos);
-        listViewTodo.setAdapter(listViewTodoAdapter);
+        todoAdapter = new TodoAdapter(todos);
+        listViewTodo.setAdapter(todoAdapter);
 
         makeTestData(); // 임시
     }

@@ -28,7 +28,8 @@
         android:id="@+id/main_activity__listViewTodo"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1" />
+        android:layout_weight="1"
+        tools:listitem="@layout/item_todo" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -38,15 +39,14 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="전체삭제"
             android:onClick="btnDeleteAllTodosClicked"
-            />
+            android:text="전체삭제" />
 
         <Button
-            android:onClick="btnFinishAppClicked"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:onClick="btnFinishAppClicked"
             android:text="앱종료" />
     </LinearLayout>
 

@@ -14,10 +14,16 @@ public class DetailActivity extends AppCompatActivity {
 
         setTitle("할일 상세정보");
 
-        String todo = getIntent().getStringExtra("todo");
+        int todoId = getIntent().getIntExtra("todoId", 0);
+        String todoTitle = getIntent().getStringExtra("todoTitle");
+
+        StringBuilder sb = new StringBuilder();
+        sb.append("번호 : " + todoId);
+        sb.append("\n");
+        sb.append(todoTitle);
 
         TextView textViewTodo = findViewById(R.id.activity_detail__textViewTodo);
-        textViewTodo.setText(todo);
+        textViewTodo.setText(sb.toString());
         textViewTodo.setOnClickListener(view -> {
             finish();
         });
