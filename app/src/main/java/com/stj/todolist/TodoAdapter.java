@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -15,10 +16,12 @@ import java.util.List;
 
 public class TodoAdapter extends BaseAdapter {
     private List<Todo> todos;
+    private View.OnClickListener onBtnDetailClicked;
     private View.OnClickListener onBtnDeleteClicked;
 
-    public TodoAdapter(List<Todo> todos, View.OnClickListener onBtnDeleteClicked) {
+    public TodoAdapter(List<Todo> todos, View.OnClickListener onBtnDetailClicked, View.OnClickListener onBtnDeleteClicked) {
         this.todos = todos;
+        this.onBtnDetailClicked = onBtnDetailClicked;
         this.onBtnDeleteClicked = onBtnDeleteClicked;
     }
 
@@ -48,8 +51,11 @@ public class TodoAdapter extends BaseAdapter {
 
             viewHolder.textViewId = convertView.findViewById(R.id.item_todo__textViewId);
             viewHolder.textViewTitle = convertView.findViewById(R.id.item_todo__textViewTitle);
-            viewHolder.btnDelete = convertView.findViewById(R.id.item_todo__btnDelete);
 
+            viewHolder.btnDetail = convertView.findViewById(R.id.item_todo__btnDetail);
+            viewHolder.btnDetail.setOnClickListener(onBtnDetailClicked);
+
+            viewHolder.btnDelete = convertView.findViewById(R.id.item_todo__btnDelete);
             viewHolder.btnDelete.setOnClickListener(onBtnDeleteClicked);
 
             convertView.setTag(viewHolder);
@@ -61,6 +67,7 @@ public class TodoAdapter extends BaseAdapter {
 
         viewHolder.textViewId.setText(todo.getId() + "");
         viewHolder.textViewTitle.setText(todo.getTitle());
+        viewHolder.btnDetail.setTag(position);
         viewHolder.btnDelete.setTag(position);
 
         return convertView;
@@ -69,6 +76,7 @@ public class TodoAdapter extends BaseAdapter {
     static class ViewHolder {
         TextView textViewId;
         TextView textViewTitle;
-        TextView btnDelete;
+        Button btnDetail;
+        Button btnDelete;
     }
 }

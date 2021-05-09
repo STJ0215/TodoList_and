@@ -57,33 +57,35 @@ public class MainActivity extends AppCompatActivity {
 
         ListView listViewTodo = findViewById(R.id.main_activity__listViewTodo);
 
-        listViewTodo.setOnItemClickListener((adapterView, view, position, id) -> {
-            Intent intent = new Intent(this, DetailActivity.class);
-            Todo todo = todos.get(position);
-            intent.putExtra("todoId", todo.getId());
-            intent.putExtra("todoTitle", todo.getTitle());
-            startActivity(intent);
-        });
+        todoAdapter = new TodoAdapter(todos,
+                view -> {
+                    final int indexToDelete = (int) view.getTag();
 
-        todoAdapter = new TodoAdapter(todos, view -> {
-            final int indexToDelete = (int) view.getTag();
+                    DialogInterface.OnClickListener onClickListener = (dialog, which) -> {
+                        switch (which) {
+                            case DialogInterface.BUTTON_POSITIVE:
+                                deleteTodo(indexToDelete);
+                                break;
+                            case DialogInterface.BUTTON_NEGATIVE:
+                                break;
+                        }
+                    };
 
-            DialogInterface.OnClickListener onClickListener = (dialog, which) -> {
-                switch (which) {
-                    case DialogInterface.BUTTON_POSITIVE:
-                        deleteTodo(indexToDelete);
-                        break;
-                    case DialogInterface.BUTTON_NEGATIVE:
-                        break;
-                }
-            };
+                    new AlertDialog.Builder(this)
+                            .setMessage("삭제하시겠습니까?")
+                            .setPositiveButton("예", onClickListener)
+                            .setNegativeButton("아니오", onClickListener)
+                            .show();
+                },
+                view -> {
+                    final int indexToDetail = (int) view.getTag();
 
-            new AlertDialog.Builder(this)
-                    .setMessage("삭제하시겠습니까?")
-                    .setPositiveButton("예", onClickListener)
-                    .setNegativeButton("아니오", onClickListener)
-                    .show();
-        });
+                    Intent intent = new Intent(this, DetailActivity.class);
+                    Todo todo = todos.get(indexToDetail);
+                    intent.putExtra("todoId", todo.getId());
+                    intent.putExtra("todoTitle", todo.getTitle());
+                    startActivity(intent);
+                });
 
         listViewTodo.setAdapter(todoAdapter);
 
