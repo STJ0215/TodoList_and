@@ -38,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void makeTestData() {
-        for (int i = 1; i <= 10; i++) {
+        for (int i = 1; i <= 5; i++) {
             addTodo("할일 " + i);
         }
     }
@@ -57,35 +57,48 @@ public class MainActivity extends AppCompatActivity {
 
         ListView listViewTodo = findViewById(R.id.main_activity__listViewTodo);
 
-        todoAdapter = new TodoAdapter(todos,
-                view -> {
-                    final int indexToDelete = (int) view.getTag();
+        View.OnClickListener onBtnDetailClicked = view -> {
+            final int indexToDetail = (int) view.getTag();
+            Intent intent = new Intent(this, DetailActivity.class);
+            Todo todo = todos.get(indexToDetail);
+            intent.putExtra("todoId", todo.getId());
+            intent.putExtra("todoTitle", todo.getTitle());
+            startActivity(intent);
+        };
 
-                    DialogInterface.OnClickListener onClickListener = (dialog, which) -> {
-                        switch (which) {
-                            case DialogInterface.BUTTON_POSITIVE:
-                                deleteTodo(indexToDelete);
-                                break;
-                            case DialogInterface.BUTTON_NEGATIVE:
-                                break;
-                        }
-                    };
+        View.OnClickListener onBtnShowModifyClicked = view -> {
+            Toast.makeText(this, "수정시작", Toast.LENGTH_SHORT).show();
+        };
 
-                    new AlertDialog.Builder(this)
-                            .setMessage("삭제하시겠습니까?")
-                            .setPositiveButton("예", onClickListener)
-                            .setNegativeButton("아니오", onClickListener)
-                            .show();
-                },
-                view -> {
-                    final int indexToDetail = (int) view.getTag();
+        View.OnClickListener onBtnModifyClicked = view -> {
+            Toast.makeText(this, "수정완료", Toast.LENGTH_SHORT).show();
+        };
 
-                    Intent intent = new Intent(this, DetailActivity.class);
-                    Todo todo = todos.get(indexToDetail);
-                    intent.putExtra("todoId", todo.getId());
-                    intent.putExtra("todoTitle", todo.getTitle());
-                    startActivity(intent);
-                });
+        View.OnClickListener onBtnCancelModifyClicked = view -> {
+            Toast.makeText(this, "수정취소", Toast.LENGTH_SHORT).show();
+        };
+
+        View.OnClickListener onBtnDeleteClicked = view -> {
+            final int indexToDelete = (int) view.getTag();
+
+            DialogInterface.OnClickListener onClickListener = (dialog, which) -> {
+                switch (which) {
+                    case DialogInterface.BUTTON_POSITIVE:
+                        deleteTodo(indexToDelete);
+                        break;
+                    case DialogInterface.BUTTON_NEGATIVE:
+                        break;
+                }
+            };
+
+            new AlertDialog.Builder(this)
+                    .setMessage("삭제하시겠습니까?")
+                    .setPositiveButton("예", onClickListener)
+                    .setNegativeButton("아니오", onClickListener)
+                    .show();
+        };
+
+        todoAdapter = new TodoAdapter(todos, onBtnDetailClicked, onBtnShowModifyClicked, onBtnModifyClicked, onBtnCancelModifyClicked, onBtnDeleteClicked);
 
         listViewTodo.setAdapter(todoAdapter);
 
