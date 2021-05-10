@@ -18,18 +18,18 @@ import java.util.List;
 public class TodoAdapter extends BaseAdapter {
     private List<Todo> todos;
     private View.OnClickListener onBtnDetailClicked;
+    private View.OnClickListener onBtnDeleteClicked;
     private View.OnClickListener onBtnShowModifyClicked;
     private View.OnClickListener onBtnModifyClicked;
     private View.OnClickListener onBtnCancelModifyClicked;
-    private View.OnClickListener onBtnDeleteClicked;
 
-    public TodoAdapter(List<Todo> todos, View.OnClickListener onBtnDetailClicked, View.OnClickListener onBtnShowModifyClicked, View.OnClickListener onBtnModifyClicked, View.OnClickListener onBtnCancelModifyClicked, View.OnClickListener onBtnDeleteClicked) {
+    public TodoAdapter(List<Todo> todos, View.OnClickListener onBtnDetailClicked, View.OnClickListener onBtnDeleteClicked, View.OnClickListener onBtnShowModifyClicked, View.OnClickListener onBtnModifyClicked, View.OnClickListener onBtnCancelModifyClicked) {
         this.todos = todos;
         this.onBtnDetailClicked = onBtnDetailClicked;
+        this.onBtnDeleteClicked = onBtnDeleteClicked;
         this.onBtnShowModifyClicked = onBtnShowModifyClicked;
         this.onBtnModifyClicked = onBtnModifyClicked;
         this.onBtnCancelModifyClicked = onBtnCancelModifyClicked;
-        this.onBtnDeleteClicked = onBtnDeleteClicked;
     }
 
     @Override
@@ -98,6 +98,18 @@ public class TodoAdapter extends BaseAdapter {
         viewHolder.btnShowModify.setTag(position);
         viewHolder.btnModify.setTag(position);
         viewHolder.btnCancelModify.setTag(position);
+
+        // 현재 수정모드여야 하는데 배우가 수정모드가 아닐때
+        if (todo.isView__modifyMode() && viewHolder.textViewTitle.getVisibility() == View.VISIBLE) {
+            // 강제로 수정버튼을 눌러서 수정모드로 바꿔준다.
+            viewHolder.btnShowModify.performClick();
+        }
+
+        // 현재 일반모드여야 하는데 배우가 일반모드가 아닐때
+        if (todo.isView__modifyMode() == false && viewHolder.textViewTitle.getVisibility() == View.GONE) {
+            // 강제로 수정취소버튼을 눌러서 일반모드로 바꿔준다.
+            viewHolder.btnCancelModify.performClick();
+        }
 
         return convertView;
     }
