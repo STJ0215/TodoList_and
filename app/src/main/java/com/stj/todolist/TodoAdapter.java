@@ -13,21 +13,21 @@ import java.util.List;
 
 public class TodoAdapter extends BaseAdapter {
     private List<Todo> todos;
-    private View.OnClickListener onBtnDeleteClicked;
     private View.OnClickListener onBtnDetailClicked;
-
     private View.OnClickListener onBtnShowModifyClicked;
-    private View.OnClickListener onBtnModifyClicked;
+    private View.OnClickListener onBtnDeleteClicked;
+
     private View.OnClickListener onBtnCancelModifyClicked;
+    private View.OnClickListener onBtnModifyClicked;
 
-    public TodoAdapter(List<Todo> todos, View.OnClickListener onBtnDeleteClicked, View.OnClickListener onBtnDetailClicked, View.OnClickListener onBtnShowModifyClicked, View.OnClickListener onBtnModifyClicked, View.OnClickListener onBtnCancelModifyClicked) {
+    public TodoAdapter(List<Todo> todos, View.OnClickListener onBtnDetailClicked, View.OnClickListener onBtnShowModifyClicked, View.OnClickListener onBtnDeleteClicked, View.OnClickListener onBtnCancelModifyClicked, View.OnClickListener onBtnModifyClicked) {
         this.todos = todos;
-        this.onBtnDeleteClicked = onBtnDeleteClicked;
         this.onBtnDetailClicked = onBtnDetailClicked;
-
         this.onBtnShowModifyClicked = onBtnShowModifyClicked;
-        this.onBtnModifyClicked = onBtnModifyClicked;
+        this.onBtnDeleteClicked = onBtnDeleteClicked;
+
         this.onBtnCancelModifyClicked = onBtnCancelModifyClicked;
+        this.onBtnModifyClicked = onBtnModifyClicked;
     }
 
     @Override
@@ -62,23 +62,23 @@ public class TodoAdapter extends BaseAdapter {
             viewHolder.textViewTitle = convertView.findViewById(R.id.item_todo__textViewTitle);
             viewHolder.textViewTitle.setOnClickListener(onBtnDetailClicked);
 
-            viewHolder.btnDelete = convertView.findViewById(R.id.item_todo__btnDelete);
-            viewHolder.btnDelete.setOnClickListener(onBtnDeleteClicked);
-
             viewHolder.btnDetail = convertView.findViewById(R.id.item_todo__btnDetail);
             viewHolder.btnDetail.setOnClickListener(onBtnDetailClicked);
-
-            // 수정모드 일 때
-            viewHolder.editTextTitle = convertView.findViewById(R.id.item_todo__editTextTitle);
 
             viewHolder.btnShowModify = convertView.findViewById(R.id.item_todo__btnShowModify);
             viewHolder.btnShowModify.setOnClickListener(onBtnShowModifyClicked);
 
-            viewHolder.btnModify = convertView.findViewById(R.id.item_todo__btnModify);
-            viewHolder.btnModify.setOnClickListener(onBtnModifyClicked);
+            viewHolder.btnDelete = convertView.findViewById(R.id.item_todo__btnDelete);
+            viewHolder.btnDelete.setOnClickListener(onBtnDeleteClicked);
+
+            // 수정모드 일 때
+            viewHolder.editTextTitle = convertView.findViewById(R.id.item_todo__editTextTitle);
 
             viewHolder.btnCancelModify = convertView.findViewById(R.id.item_todo__btnCancelModify);
             viewHolder.btnCancelModify.setOnClickListener(onBtnCancelModifyClicked);
+
+            viewHolder.btnModify = convertView.findViewById(R.id.item_todo__btnModify);
+            viewHolder.btnModify.setOnClickListener(onBtnModifyClicked);
 
             convertView.setTag(viewHolder);
         }
@@ -94,14 +94,13 @@ public class TodoAdapter extends BaseAdapter {
         viewHolder.textViewTitle.setText(todo.getTitle());
         viewHolder.textViewTitle.setTag(position);
 
-        viewHolder.btnDelete.setTag(position);
         viewHolder.btnDetail.setTag(position);
-
         viewHolder.btnShowModify.setTag(position);
+        viewHolder.btnDelete.setTag(position);
 
         viewHolder.editTextTitle.setText(todo.getTitle());
-        viewHolder.btnModify.setTag(position);
         viewHolder.btnCancelModify.setTag(position);
+        viewHolder.btnModify.setTag(position);
 
         // 역할면에서 현재 수정모드여야 하는데, 배우가 수정모드가 아닐 때
         if (todo.isView__modifyMode() && viewHolder.textViewTitle.getVisibility() == View.VISIBLE) {
@@ -121,12 +120,12 @@ public class TodoAdapter extends BaseAdapter {
     static class ViewHolder {
         TextView textViewId;
         TextView textViewTitle;
-        Button btnDelete;
         Button btnDetail;
+        Button btnShowModify;
+        Button btnDelete;
 
         EditText editTextTitle;
-        Button btnShowModify;
-        Button btnModify;
         Button btnCancelModify;
+        Button btnModify;
     }
 }

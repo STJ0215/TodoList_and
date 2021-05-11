@@ -58,6 +58,38 @@ public class MainActivity extends AppCompatActivity {
 
         ListView listViewTodo = findViewById(R.id.main_activity__listViewTodo);
 
+        View.OnClickListener onBtnDetailClicked = view -> {
+            final int indexToDetail = (int) view.getTag();
+            Intent intent = new Intent(this, DetailActivity.class);
+            Todo todo = todos.get(indexToDetail);
+
+            intent.putExtra("todoId", todo.getId());
+            intent.putExtra("todoTitle", todo.getTitle());
+
+            startActivity(intent);
+        };
+
+        View.OnClickListener onBtnShowModifyClicked = view -> {
+            int articleIndex = (int)view.getTag();
+            todos.get(articleIndex).setView__modifyMode(true);
+
+            View itemView = (View) view.getParent();
+
+            TextView textViewTitle = itemView.findViewById(R.id.item_todo__textViewTitle);
+            textViewTitle.setVisibility(View.GONE);
+
+            itemView.findViewById(R.id.item_todo__btnDetail).setVisibility(View.GONE);
+            itemView.findViewById(R.id.item_todo__btnShowModify).setVisibility(View.GONE);
+            itemView.findViewById(R.id.item_todo__btnDelete).setVisibility(View.GONE);
+
+            EditText editTextTitle = itemView.findViewById(R.id.item_todo__editTextTitle);
+            editTextTitle.setText(textViewTitle.getText().toString().trim());
+            editTextTitle.setVisibility(View.VISIBLE);
+
+            itemView.findViewById(R.id.item_todo__btnCancelModify).setVisibility(View.VISIBLE);
+            itemView.findViewById(R.id.item_todo__btnModify).setVisibility(View.VISIBLE);
+        };
+
         View.OnClickListener onBtnDeleteClicked = view -> {
             final int indexToDelete = (int) view.getTag();
 
@@ -78,34 +110,20 @@ public class MainActivity extends AppCompatActivity {
                     .show();
         };
 
-        View.OnClickListener onBtnDetailClicked = view -> {
-            final int indexToDetail = (int) view.getTag();
-            Intent intent = new Intent(this, DetailActivity.class);
-            Todo todo = todos.get(indexToDetail);
-            intent.putExtra("todoId", todo.getId());
-            intent.putExtra("todoTitle", todo.getTitle());
-            startActivity(intent);
-        };
-
-        View.OnClickListener onBtnShowModifyClicked = view -> {
+        View.OnClickListener onBtnCancelModifyClicked = view -> {
             int articleIndex = (int)view.getTag();
-            todos.get(articleIndex).setView__modifyMode(true);
+            todos.get(articleIndex).setView__modifyMode(false);
 
             View itemView = (View) view.getParent();
 
-            TextView textViewTitle = itemView.findViewById(R.id.item_todo__textViewTitle);
-            textViewTitle.setVisibility(View.GONE);
+            itemView.findViewById(R.id.item_todo__textViewTitle).setVisibility(View.VISIBLE);
+            itemView.findViewById(R.id.item_todo__btnDetail).setVisibility(View.VISIBLE);
+            itemView.findViewById(R.id.item_todo__btnShowModify).setVisibility(View.VISIBLE);
+            itemView.findViewById(R.id.item_todo__btnDelete).setVisibility(View.VISIBLE);
 
-            itemView.findViewById(R.id.item_todo__btnShowModify).setVisibility(View.GONE);
-            itemView.findViewById(R.id.item_todo__btnDelete).setVisibility(View.GONE);
-            itemView.findViewById(R.id.item_todo__btnDetail).setVisibility(View.GONE);
-
-            EditText editTextTitle = itemView.findViewById(R.id.item_todo__editTextTitle);
-            editTextTitle.setText(textViewTitle.getText().toString().trim());
-            editTextTitle.setVisibility(View.VISIBLE);
-
-            itemView.findViewById(R.id.item_todo__btnCancelModify).setVisibility(View.VISIBLE);
-            itemView.findViewById(R.id.item_todo__btnModify).setVisibility(View.VISIBLE);
+            itemView.findViewById(R.id.item_todo__editTextTitle).setVisibility(View.GONE);
+            itemView.findViewById(R.id.item_todo__btnCancelModify).setVisibility(View.GONE);
+            itemView.findViewById(R.id.item_todo__btnModify).setVisibility(View.GONE);
         };
 
         View.OnClickListener onBtnModifyClicked = view -> {
@@ -130,32 +148,16 @@ public class MainActivity extends AppCompatActivity {
             todos.get(todoIndex).setTitle(newTitle);
 
             textViewTitle.setVisibility(View.VISIBLE);
+            itemView.findViewById(R.id.item_todo__btnDetail).setVisibility(View.VISIBLE);
             itemView.findViewById(R.id.item_todo__btnShowModify).setVisibility(View.VISIBLE);
             itemView.findViewById(R.id.item_todo__btnDelete).setVisibility(View.VISIBLE);
-            itemView.findViewById(R.id.item_todo__btnDetail).setVisibility(View.VISIBLE);
 
             editTextTitle.setVisibility(View.GONE);
             itemView.findViewById(R.id.item_todo__btnCancelModify).setVisibility(View.GONE);
             itemView.findViewById(R.id.item_todo__btnModify).setVisibility(View.GONE);
         };
 
-        View.OnClickListener onBtnCancelModifyClicked = view -> {
-            int articleIndex = (int)view.getTag();
-            todos.get(articleIndex).setView__modifyMode(false);
-
-            View itemView = (View) view.getParent();
-
-            itemView.findViewById(R.id.item_todo__textViewTitle).setVisibility(View.VISIBLE);
-            itemView.findViewById(R.id.item_todo__btnShowModify).setVisibility(View.VISIBLE);
-            itemView.findViewById(R.id.item_todo__btnDelete).setVisibility(View.VISIBLE);
-            itemView.findViewById(R.id.item_todo__btnDetail).setVisibility(View.VISIBLE);
-
-            itemView.findViewById(R.id.item_todo__editTextTitle).setVisibility(View.GONE);
-            itemView.findViewById(R.id.item_todo__btnCancelModify).setVisibility(View.GONE);
-            itemView.findViewById(R.id.item_todo__btnModify).setVisibility(View.GONE);
-        };
-
-        todoAdapter = new TodoAdapter(todos, onBtnDeleteClicked, onBtnDetailClicked, onBtnShowModifyClicked, onBtnModifyClicked, onBtnCancelModifyClicked);
+        todoAdapter = new TodoAdapter(todos, onBtnDetailClicked, onBtnShowModifyClicked, onBtnDeleteClicked, onBtnCancelModifyClicked, onBtnModifyClicked);
 
         listViewTodo.setAdapter(todoAdapter);
 
