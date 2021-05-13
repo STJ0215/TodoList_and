@@ -37,12 +37,13 @@ public class MainActivity extends AppCompatActivity {
         todos.clear();
         todoAdapter.notifyDataSetChanged();
     }
-
+    /*
     private void makeTestData() {
         for (int i = 0; i < 3; i++) {
             addTodo("할일 " + (i + 1));
         }
     }
+     */
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -160,8 +161,10 @@ public class MainActivity extends AppCompatActivity {
         todoAdapter = new TodoAdapter(todos, onBtnDetailClicked, onBtnShowModifyClicked, onBtnDeleteClicked, onBtnCancelModifyClicked, onBtnModifyClicked);
 
         listViewTodo.setAdapter(todoAdapter);
-
+        
+        /*
         makeTestData(); // 임시
+         */
     }
 
     public void btnAddTodoClicked(View view) {
